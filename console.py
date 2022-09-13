@@ -117,20 +117,19 @@ class HBNBCommand(cmd.Cmd):
             if "=" in arg:
                 key_v = arg.split('=', 1)
                 key = key_v[0]
-                value= key_v[1]
+                value = key_v[1]
                 if value[0] == value[-1] == '"':
                     value = shlex.split(value)[0].replace('_', ' ')
                 else:
                     try:
                         value = int(value)
-                    except:
+                    except ValueError:
                         try:
                             value = float(value)
-                        except:
+                        except ValueError:
                             continue
                 new_args[key] = value
         return new_args
-
 
     def emptyline(self):
         """ Overrides the emptyline method of CMD """
@@ -349,6 +348,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()

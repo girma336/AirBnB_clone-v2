@@ -10,6 +10,7 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+import shlex
 
 
 class HBNBCommand(cmd.Cmd):
@@ -109,19 +110,48 @@ class HBNBCommand(cmd.Cmd):
         """ Prints the help documentation for EOF """
         print("Exits the program without formatting\n")
 
+    def _key_value(self, args):
+        """used to evalut the arg in dictionary"""
+        new_args = {}
+        for arg in args:
+            if "=" in arg:
+                key_v = arg.split('=', 1)
+                key = key_v[0]
+                value= key_v[1]
+                if value[0] == value[-1] == '"':
+                    value = shlex.split(value)[0].replace('_', ' ')
+                else:
+                    try:
+                        value = int(value)
+                    except:
+                        try:
+                            value = float(value)
+                        except:
+                            continue
+                new_args[key] = value
+        return new_args
+
+
     def emptyline(self):
         """ Overrides the emptyline method of CMD """
         pass
 
     def do_create(self, args):
         """ Create an object of any class"""
-        if not args:
+        arg = args.split()
+        if len(arg) == 0:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        if arg[0] in HBNBCommand.classes:
+            new_args = self._key_value(arg[1:])
+            new_instance = HBNBCommand.classes[arg[0]](new_args)
+            if new_args is not None:
+                for k, v in new_args.items():
+                    setattr(new_instance, k, v)
+
+        else:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
         storage.save()
         print(new_instance.id)
         storage.save()

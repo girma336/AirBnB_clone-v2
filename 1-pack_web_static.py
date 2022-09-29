@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """
-All file in the folder web_statics 
-must be added to the final archive
+Fabric script to genereate tgz archive
+execute: fab -f 1-pack_web_static.py do_pack
 """
 
 from datetime import datetime
@@ -12,6 +12,7 @@ def do_pack():
     """
     making an archive on web_static folder
     """
+
     time = datetime.now()
     archive = 'web_static_' + time.strftime("%Y%m%d%H%M%S") + '.' + 'tgz'
     local('mkdir -p versions')

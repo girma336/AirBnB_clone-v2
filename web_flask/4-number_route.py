@@ -34,7 +34,7 @@ def pythoniscool(text='is cool'):
 @app.route('/number/<int:n>', strict_slashes=False)
 def imanumber(n):
     """return when the number are integer"""
-    return "{:d} is number".format(n)
+    return "{:d} is a number".format(n)
 
 
 if __name__ == '__main__':
